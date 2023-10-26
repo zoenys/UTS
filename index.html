@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UTS_Zoen Yokhanan Sianipar</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>UTS</h1>
+        <h3>Algoritma Pemograman 2</h3>
+        <p>Masukkan: https://zoenyokhanansianiparalproweek4.alwaysdata.net/UTS/getcsv2json.php</p><hr>
+    </div>
+    <div class="element">
+        <input type="text" id="textInput" placeholder="Enter link here">
+        <button id="submitButton">Submit</button>
+    </div>
+    <div>
+        <table id="userTable">
+            <thead>
+                <tr id="table-headers">
+                    <!-- Header-->
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                <!--Row-->
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script>
+        const textInput = document.getElementById("textInput");
+        const submitButton = document.getElementById("submitButton");
+        const tableHeaders = document.getElementById("table-headers");
+        const tableBody = document.getElementById("table-body");
+
+        submitButton.addEventListener("click", async () => {
+            try {
+                const link = textInput.value;
+                const response = await axios.get(link);
+                const data = response.data;
+
+                tableHeaders.innerHTML = "";
+                tableBody.innerHTML = "";
+
+                const headers = Object.keys(data[0]);
+                for (const header of headers) {
+                    const th = document.createElement("th");
+                    th.textContent = header;
+                    tableHeaders.appendChild(th);
+                }
+
+                for (const item of data) {
+                    const row = document.createElement("tr");
+                    for (const header of headers) {
+                        const td = document.createElement("td");
+                        td.textContent = item[header];
+                        row.appendChild(td);
+                    }
+                    tableBody.appendChild(row);
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        $(document).ready(function() {
+        $('#userTable').DataTable({"aaSorting":[]});
+        });
+        
+        });
+    </script>
+</body>
+</html>
+
+
